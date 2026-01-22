@@ -51,17 +51,37 @@ npm run dev
 
 ### Configuring Your Projects
 
-To make a project visible to Local Launchpad, add a `.launchpad` file to the root of that project.
+To make a project visible to Local Launchpad, add a `.launchpad` file to the root of that project. This file can contain a single project configuration or an array of multiple configurations (useful for monorepos or multi-service projects).
 
-**Example `.launchpad`:**
+**Example `.launchpad` (Single project):**
 
 ```json
 {
   "name": "My app",
   "port": 4200,
-  "startCommand": "npm run start:amy-app",
-  "color": "blue"
+  "startCommand": "npm run start:my-app",
+  "color": "blue",
+  "category": "Web Applications"
 }
+```
+
+**Example `.launchpad` (Multiple projects):**
+
+```json
+[
+  {
+    "name": "Frontend",
+    "port": 3000,
+    "startCommand": "npm run dev",
+    "category": "Project X"
+  },
+  {
+    "name": "Backend",
+    "port": 4000,
+    "startCommand": "npm run server",
+    "category": "Project X"
+  }
+]
 ```
 
 | Field | Description | Type |
@@ -70,6 +90,7 @@ To make a project visible to Local Launchpad, add a `.launchpad` file to the roo
 | `port` | The port the application runs on (used for linking and status checks). | `number` |
 | `startCommand` | The command to start the application (e.g., `npm start`). | `string` |
 | `color` | Visual accent color for the project card (e.g., `blue`, `red`). | `string` |
+| `category` | Optional category to group multiple launchers together. | `string` |
 
 ## Project Structure
 
