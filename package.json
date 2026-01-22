@@ -1,0 +1,14 @@
+{
+    "name": "local-launchpad",
+    "version": "1.0.0",
+    "description": "Local Launchpad Monorepo",
+    "scripts": {
+        "install:all": "npm install && cd server && npm install && cd ../client && npm install",
+        "start:server": "cd server && npm run dev",
+        "start:client": "cd client && npm run dev",
+        "dev": "concurrently \"npm run start:server\" \"npm run start:client\""
+    },
+    "devDependencies": {
+        "concurrently": "^8.2.2"
+    }
+}
