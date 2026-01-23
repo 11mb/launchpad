@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import path from 'path';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
+import fs from 'fs';
 import { scanForProjects } from './scanner';
 import { getProjectStatus, startProject, stopProject, processEvents } from './process-manager';
 
@@ -22,8 +23,19 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Determine root dir to scan
-// const SCAN_ROOT = path.resolve(__dirname, '../../../'); 
-const PROJECTS_ROOT = path.resolve(process.cwd(), '../../');
+const CONFIG_PATH = path.resolve(process.cwd(), '../launchpad.config.json');
+let PROJECTS_ROOT = path.resolve(process.cwd(), '../../');
+
+if (fs.existsSync(CONFIG_PATH)) {
+    try {
+        const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf-8'));
+        if (config.projectsRoot) {
+            PROJECTS_ROOT = path.resolve(path.dirname(CONFIG_PATH), config.projectsRoot);
+        }
+    } catch (err) {
+        console.error('Error reading launchpad.config.json:', err);
+    }
+}
 
 console.log(`Scanning for projects in: ${PROJECTS_ROOT}`);
 
@@ -71,7 +83,6 @@ app.post('/api/projects/start', async (req, res) => {
     }
 
     try {
-        const fs = require('fs');
         const content = fs.readFileSync(path.join(projectPath, '.launchpad'), 'utf-8');
         const parsed = JSON.parse(content);
         const configs = Array.isArray(parsed) ? parsed : [parsed];
@@ -103,7 +114,6 @@ app.post('/api/projects/stop', async (req, res) => {
     if (!id) return res.status(400).json({ error: 'ID is required' });
 
     try {
-        const fs = require('fs');
         let port: number | undefined;
         try {
             const content = fs.readFileSync(path.join(projectPath, '.launchpad'), 'utf-8');

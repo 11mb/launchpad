@@ -92,6 +92,22 @@ To make a project visible to Local Launchpad, add a `.launchpad` file to the roo
 | `color` | Visual accent color for the project card (e.g., `blue`, `red`). | `string` |
 | `category` | Optional category to group multiple launchers together. | `string` |
 
+## Root configuration
+
+Launchpad reads a root config file `launchpad.config.json` at the repository root to determine where to scan for projects.
+
+- `projectsRoot`: Path (relative to this repo) where Launchpad will recursively search for projects containing a `.launchpad` file.
+
+Example `launchpad.config.json`:
+
+```json
+{
+  "projectsRoot": "../"
+}
+```
+
+If you keep your projects outside this repository, set `projectsRoot` accordingly (e.g., `"../"` to look one level up, or a specific subfolder like `"../workspace"`).
+
 ## Project Structure
 
 ```text

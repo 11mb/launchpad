@@ -2,7 +2,8 @@ import { type FC } from 'react';
 import type { Project } from '../types';
 import { Button } from './ui/Button';
 import { Badge } from './ui/Badge';
-import { Play, Square, ExternalLink, Terminal, Copy } from 'lucide-react';
+import { Play, Square, ExternalLink, Terminal } from 'lucide-react';
+import { CopyButton } from './CopyButton';
 
 interface ProjectCardProps {
     project: Project;
@@ -43,9 +44,6 @@ export const ProjectCard: FC<ProjectCardProps> = ({ project, onStart, onStop, on
                             {port && (
                                 <>
                                     <span className="font-mono">localhost:{port}</span>
-                                    <button className="text-gray-300 hover:text-gray-500 transition-colors">
-                                        <Copy size={12} />
-                                    </button>
                                 </>
                             )}
                         </div>
@@ -89,6 +87,10 @@ export const ProjectCard: FC<ProjectCardProps> = ({ project, onStart, onStop, on
                 >
                     <Terminal size={18} />
                 </button>
+
+                <div className="w-10 h-10 flex items-center justify-center">
+                    <CopyButton text={project.path} />
+                </div>
             </div>
         </div>
     );

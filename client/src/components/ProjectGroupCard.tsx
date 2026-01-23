@@ -3,6 +3,7 @@ import type { Project } from '../types';
 import { Button } from './ui/Button';
 import { Badge } from './ui/Badge';
 import { Play, Square, ExternalLink, Folder, Terminal } from 'lucide-react';
+import { CopyButton } from './CopyButton';
 
 interface ProjectGroupCardProps {
     path: string;
@@ -46,38 +47,42 @@ export const ProjectGroupCard: FC<ProjectGroupCardProps> = ({ path, projects, on
                                 )}
                             </div>
 
-                            <div className="flex items-center gap-2">
+                            <div className="flex flex-col items-end gap-2">
                                 <Badge status={project.status} />
 
-                                <Button
-                                    size="sm"
-                                    variant="ghost"
-                                    className={`!p-2 h-8 w-8 hover:bg-gray-200 ${isRunning ? 'text-red-500' : 'text-green-600'}`}
-                                    onClick={() => isRunning ? onStop(project) : onStart(project)}
-                                    title={isRunning ? "Stop" : "Start"}
-                                >
-                                    {isRunning ? <Square size={14} fill="currentColor" /> : <Play size={14} fill="currentColor" />}
-                                </Button>
-
-                                <button
-                                    onClick={() => onViewLogs(project)}
-                                    className="w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-black hover:bg-gray-200 transition-colors"
-                                    title="View Logs"
-                                >
-                                    <Terminal size={14} />
-                                </button>
-
-                                {project.config.port && (
-                                    <a
-                                        href={`http://localhost:${project.config.port}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-black hover:bg-gray-200 transition-colors"
-                                        title="Open in Browser"
+                                <div className="flex items-center gap-2">
+                                    <Button
+                                        size="sm"
+                                        variant="ghost"
+                                        className={`!p-2 h-8 w-8 hover:bg-gray-200 ${isRunning ? 'text-red-500' : 'text-green-600'}`}
+                                        onClick={() => isRunning ? onStop(project) : onStart(project)}
+                                        title={isRunning ? "Stop" : "Start"}
                                     >
-                                        <ExternalLink size={14} />
-                                    </a>
-                                )}
+                                        {isRunning ? <Square size={14} fill="currentColor" /> : <Play size={14} fill="currentColor" />}
+                                    </Button>
+
+                                    <button
+                                        onClick={() => onViewLogs(project)}
+                                        className="w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-black hover:bg-gray-200 transition-colors"
+                                        title="View Logs"
+                                    >
+                                        <Terminal size={14} />
+                                    </button>
+
+                                    {project.config.port && (
+                                        <a
+                                            href={`http://localhost:${project.config.port}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-black hover:bg-gray-200 transition-colors"
+                                            title="Open in Browser"
+                                        >
+                                            <ExternalLink size={14} />
+                                        </a>
+                                    )}
+
+                                    <CopyButton text={project.path} />
+                                </div>
                             </div>
                         </div>
                     );
